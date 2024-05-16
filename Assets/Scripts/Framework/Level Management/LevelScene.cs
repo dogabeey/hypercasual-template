@@ -16,88 +16,10 @@ namespace Dogabeey
         public static LevelScene Instance;
 
         public string levelName;
-        public RectTransform winPanel;
-        public RectTransform losePanel;
-        public Animator levelAnimator;
 
-        private Camera tempCam;
-
-        private void OnEnable()
-        {
-            EventManager.StartListening(Const.GameEvents.LEVEL_COMPLETED, OnLevelCompleted);
-            EventManager.StartListening(Const.GameEvents.LEVEL_FAILED, OnLevelFailed);
-        }
-        private void OnDisable()
-        {
-            EventManager.StopListening(Const.GameEvents.LEVEL_COMPLETED, OnLevelCompleted);
-            EventManager.StopListening(Const.GameEvents.LEVEL_FAILED, OnLevelFailed);
-        }
-
-        void OnLevelCompleted(EventParam e)
-        {
-            if (levelAnimator)
-            {
-                //Play animation and wait until the animation ends
-                levelAnimator.SetTrigger("WinLevel");
-                DOVirtual.DelayedCall(3, () =>
-                {
-                    ExecuteWinGame();
-
-                });
-            }
-            else
-            {
-                ExecuteWinGame();
-            }
-        }
-        void OnLevelFailed(EventParam e)
-        {
-            if (losePanel)
-            {
-                losePanel.gameObject.SetActive(true);
-            }
-            else
-            {
-                WorldManager.Instance.ResetCurrentLevel();
-            }
-        }
-        void ExecuteWinGame()
-        {
-            World.Instance.CurrentLevel.gameObject.SetActive(false);
-            if (winPanel)
-            {
-                winPanel.gameObject.SetActive(true);
-            }
-            else
-            {
-                WorldManager.Instance.LoadNextLevel();
-            }
-        }
         private void Awake()
         {
             Instance = this;
-        }
-
-
-        void Start()
-        {
-            GameObject tempCamObject = GameObject.FindGameObjectWithTag("TempCamera");
-            if(tempCamObject)
-            {
-                if(tempCamObject.TryGetComponent(out Camera camera))
-                {
-                    camera.gameObject.SetActive(false);
-                }
-            }
-            Camera.main.gameObject.SetActive(true);
-        }
-
-        private void OnDestroy()
-        {
-            if(tempCam)
-            {
-                tempCam.gameObject.SetActive(true);
-            }
         }
 
         private void Update()

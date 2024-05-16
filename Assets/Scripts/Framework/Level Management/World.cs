@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 using Dogabeey.SimpleJSON;
-using Steamworks;
 
 namespace Dogabeey
 {

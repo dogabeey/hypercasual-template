@@ -152,21 +152,9 @@ namespace Dogabeey
             audioSource.clip = soundInfo.audioClips.GetRandomElement();
             audioSource.loop = loop;
             audioSource.time = 0;
-            audioSource.volume = soundInfo.clipVolume * volumeMultiplier * SettingsManager.Instance.masterVolume;
+            audioSource.volume = soundInfo.clipVolume * volumeMultiplier;
             audioSource.pitch += pitchOffset;
 
-            // Adjusting the volume based on the sound type
-            switch (soundInfo.type)
-            {
-                case SoundType.SoundEffect:
-                    audioSource.volume *= SettingsManager.Instance.sfxVolume;
-                    break;
-                case SoundType.Music:
-                    audioSource.volume *= SettingsManager.Instance.musicVolume;
-                    break;
-                default:
-                    break;
-            }
 
             if (playDelay > 0)
             {

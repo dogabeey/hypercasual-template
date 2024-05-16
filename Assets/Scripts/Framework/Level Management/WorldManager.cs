@@ -9,7 +9,6 @@ namespace Dogabeey
     {
         public List<World> worlds;
         public Transform levelContainer;
-        public Transform mainMenu;
 
         private World currentWorld;
 
@@ -27,19 +26,22 @@ namespace Dogabeey
                 EventManager.TriggerEvent(Const.GameEvents.CURRENT_WORLD_CHANGED, new EventParam());
             }
         }
-        public World MainWorld
+
+        private void Start()
         {
-            get
-            {
-                return worlds.Find(world => world.mainWorld);
-            }
+            Application.targetFrameRate = 60;
+            CurrentWorld = worlds[0];
+            LoadCurrentLevel();
+        }
+        private void Update()
+        {
+            
         }
 
         public void LoadLevel(LevelScene levelScene)
         {
             EndCurrentLevel();
             World.Instance.CurrentLevel = Instantiate(levelScene, levelContainer);
-            ScreenManager.Instance.Show(Const.Screens.GameScene);
         }
         public void LoadCurrentLevel()
         {
@@ -70,16 +72,12 @@ namespace Dogabeey
         }
         private LevelScene FindCurrentLevel()
         {
-            return World.Instance.levelScenes[World.Instance.lastPlayedLevelIndex];
+            return World.Instance.levelScenes[World.Instance.lastPlayedLevelIndex % World.Instance.levelScenes.Count];
         }
         private LevelScene FindNextLevel()
         {
             World.Instance.lastPlayedLevelIndex++;
-            return World.Instance.levelScenes[World.Instance.lastPlayedLevelIndex];
-        }
-
-        private void Update()
-        {
+            return World.Instance.levelScenes[World.Instance.lastPlayedLevelIndex % World.Instance.levelScenes.Count];
         }
 
     }
