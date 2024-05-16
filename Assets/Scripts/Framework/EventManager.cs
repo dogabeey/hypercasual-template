@@ -95,10 +95,6 @@ namespace Dogabeey
         public Type paramType;
         public bool paramBool;
         public Dictionary<string, object> paramDictionary;
-        public Vector3[] vectorList;
-
-        public Transform transform;
-        public Entity entity;
 
         public EventParam()
         {
@@ -111,7 +107,7 @@ namespace Dogabeey
         }
 
         public EventParam(GameObject paramObj = null, int paramInt = 0, float paramFloat = 0f, string paramStr = "", Type paramType = null, Dictionary<string, object> paramDictionary = null,
-        Vector3[] vectorList = null, bool paramBool = false, Entity entity = null)
+        Vector3[] vectorList = null, bool paramBool = false)
         {
             this.paramObj = paramObj;
             this.paramInt = paramInt;
@@ -120,8 +116,6 @@ namespace Dogabeey
             this.paramType = paramType;
             this.paramDictionary = paramDictionary;
             this.paramBool = paramBool;
-            this.vectorList = vectorList;
-            this.entity = entity;
         }
     }
 }

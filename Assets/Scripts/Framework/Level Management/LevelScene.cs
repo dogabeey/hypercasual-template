@@ -26,13 +26,11 @@ namespace Dogabeey
         {
             EventManager.StartListening(Const.GameEvents.LEVEL_COMPLETED, OnLevelCompleted);
             EventManager.StartListening(Const.GameEvents.LEVEL_FAILED, OnLevelFailed);
-            EventManager.StartListening(Const.GameEvents.LEVEL_LOCKED, OnLevelLocked);
         }
         private void OnDisable()
         {
             EventManager.StopListening(Const.GameEvents.LEVEL_COMPLETED, OnLevelCompleted);
             EventManager.StopListening(Const.GameEvents.LEVEL_FAILED, OnLevelFailed);
-            EventManager.StopListening(Const.GameEvents.LEVEL_LOCKED, OnLevelLocked);
         }
 
         void OnLevelCompleted(EventParam e)
@@ -63,14 +61,9 @@ namespace Dogabeey
                 WorldManager.Instance.ResetCurrentLevel();
             }
         }
-        void OnLevelLocked(EventParam e)
-        {
-            PreLose();
-        }
         void ExecuteWinGame()
         {
             World.Instance.CurrentLevel.gameObject.SetActive(false);
-            PlayerInputManager.Instance.gameObject.SetActive(false);
             if (winPanel)
             {
                 winPanel.gameObject.SetActive(true);
@@ -78,25 +71,6 @@ namespace Dogabeey
             else
             {
                 WorldManager.Instance.LoadNextLevel();
-            }
-        }
-        void PreLose()
-        {
-            Debug.Log("You are stuck!");
-            PlayerInputManager.Instance.gameObject.SetActive(false);
-
-            if (levelAnimator)
-            {
-                //Play animation and wait until the animation ends
-                levelAnimator.SetTrigger("LoseLevel");
-                DOVirtual.DelayedCall(3, () =>
-                {
-                    EventManager.TriggerEvent(Const.GameEvents.LEVEL_FAILED, new EventParam());
-                });
-            }
-            else
-            {
-                EventManager.TriggerEvent(Const.GameEvents.LEVEL_FAILED, new EventParam());
             }
         }
         private void Awake()
