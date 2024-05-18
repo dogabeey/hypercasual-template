@@ -2,17 +2,18 @@ using UnityEngine;
 
 namespace Dogabeey
 {
+    public enum Screens
+    {
+        MainMenu,
+        LevelList,
+        WorldList,
+        WinScreen,
+        LoseScreen,
+        SettingScreen,
+    }
     public struct Const
     {
 
-        public enum Screens
-        {
-            MainMenu,
-            LevelList,
-            WorldList,
-            GameScene,
-            PauseMenu
-        }
         public struct Values
         {
             public const float PICKUP_DROP_HEIGHT_TRY_STEP = 1f;

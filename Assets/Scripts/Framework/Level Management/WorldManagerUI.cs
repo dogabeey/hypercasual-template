@@ -22,7 +22,7 @@ namespace Dogabeey
         {
             backButton.onClick.AddListener(() =>
             {
-                ScreenManager.Instance.Show(Const.Screens.MainMenu);
+                ScreenManager.Instance.Show(Screens.MainMenu);
             });
             DrawUI();
         }
@@ -45,7 +45,7 @@ namespace Dogabeey
         private void LoadWorld(World world)
         {
             WorldManager.Instance.CurrentWorld = world;
-            ScreenManager.Instance.Show(Const.Screens.LevelList);
+            ScreenManager.Instance.Show(Screens.LevelList);
         }
     }
     

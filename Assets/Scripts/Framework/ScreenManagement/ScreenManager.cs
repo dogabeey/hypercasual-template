@@ -6,7 +6,6 @@ namespace Dogabeey
 {
     public class ScreenManager : SingletonComponent<ScreenManager>
     {
-        public Const.Screens firstScreen;
         internal List<GameScreen> screens = new List<GameScreen>();
 
         private IEnumerator Start()
@@ -14,7 +13,7 @@ namespace Dogabeey
             yield return new WaitForSeconds(0.5f);
             screens.AddRange(FindObjectsOfType<GameScreen>(true));
 
-            Show(firstScreen);
+            //Show(firstScreen);
         }
 
         private void Update()
@@ -27,7 +26,7 @@ namespace Dogabeey
             screens.ForEach(screen => screen.gameObject.SetActive(false));
             gameScreen.gameObject.SetActive(true);
         }
-        public void Show(Const.Screens screenID)
+        public void Show(Screens screenID)
         {
             screens.ForEach(screen => screen.gameObject.SetActive(false));
             screens.Find(screen => screen.screenID == screenID).gameObject.SetActive(true);

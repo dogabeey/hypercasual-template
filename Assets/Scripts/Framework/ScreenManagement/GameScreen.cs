@@ -1,11 +1,12 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Dogabeey
 {
-    public class GameScreen : MonoBehaviour
+    public class GameScreen : SerializedMonoBehaviour
     {
-        public Const.Screens screenID;
+        public Screens screenID;
     }
 
 }

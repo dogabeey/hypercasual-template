@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Dogabeey
 {
     public class WorldManager : SingletonComponent<WorldManager>
     {
+        [Header("References")]
         public List<World> worlds;
         public Transform levelContainer;
 
@@ -25,6 +27,25 @@ namespace Dogabeey
                 
                 EventManager.TriggerEvent(Const.GameEvents.CURRENT_WORLD_CHANGED, new EventParam());
             }
+        }
+
+        private void OnEnable()
+        {
+            EventManager.StartListening(Const.GameEvents.LEVEL_COMPLETED, OnLevelCompleted);
+            EventManager.StartListening(Const.GameEvents.LEVEL_FAILED, OnLevelFailed);
+        }
+        private void OnDisable()
+        {
+            EventManager.StopListening(Const.GameEvents.LEVEL_COMPLETED, OnLevelCompleted);
+            EventManager.StopListening(Const.GameEvents.LEVEL_FAILED, OnLevelFailed);
+        }
+        void OnLevelCompleted(EventParam param)
+        {
+            ScreenManager.Instance.Show(Screens.WinScreen);
+        }
+        void OnLevelFailed(EventParam param)
+        {
+            ScreenManager.Instance.Show(Screens.LoseScreen);
         }
 
         private void Start()
