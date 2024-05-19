@@ -24,12 +24,20 @@ namespace Dogabeey
         public void Show(GameScreen gameScreen)
         {
             screens.ForEach(screen => screen.gameObject.SetActive(false));
-            gameScreen.gameObject.SetActive(true);
+            ShowScreen(gameScreen);
         }
+
         public void Show(Screens screenID)
         {
             screens.ForEach(screen => screen.gameObject.SetActive(false));
-            screens.Find(screen => screen.screenID == screenID).gameObject.SetActive(true);
+            GameScreen gameScreen = screens.Find(screen => screen.screenID == screenID);
+            ShowScreen(gameScreen);
+        }
+
+        private static void ShowScreen(GameScreen gameScreen)
+        {
+            gameScreen.gameObject.SetActive(true);
+            if (gameScreen.animator) gameScreen.animator.Play(gameScreen.playAnimationName);
         }
     }
 

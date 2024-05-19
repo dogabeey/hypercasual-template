@@ -55,9 +55,6 @@ namespace Dogabeey
 
         public struct GameEvents
         {
-            public const string ENTITY_MOVED = "ENTITY_MOVED";
-            public const string CREATURE_DEATH = "CREATURE_DEATH";
-            public const string CREATURE_JUMP = "CREATURE_JUMP";
             public const string COLLECTIBLE_EARNED = "COLLECTIBLE_EARNED";
             public const string OBJECTIVE_COMPLETED = "OBJECTIVE_COMPLETED";
             public const string OBJECTIVE_FAILED = "OBJECTIVE_FAILED";
@@ -65,15 +62,6 @@ namespace Dogabeey
             public const string LEVEL_COMPLETED = "LEVEL_COMPLETED";
             public const string LEVEL_FAILED = "LEVEL_FAILED";
             public const string LEVEL_STARTED = "LEVEL_STARTED";
-            public const string LEVEL_LOCKED = "LEVEL_LOCKED";
-            public const string LEVEL_UNLOCKED = "LEVEL_UNLOCKED";
-
-            public const string PLAYER_CREATED = "PLAYER_CREATED";
-
-            public const string PLAYER_ENTERED_RANGE = "PLAYER_ENTERED_RANGE";
-            public const string PLAYER_EXITED_RANGE = "PLAYER_EXITED_RANGE";
-            public const string PLAYER_PICKED_OBJECT = "PLAYER_PICKED_OBJECT";
-            public const string PLAYER_DROPPED_OBJECT = "PLAYER_DROPPED_OBJECT";
 
             public const string CURRENT_WORLD_CHANGED = "CURRENT_WORLD_CHANGED";
         }

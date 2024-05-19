@@ -74,6 +74,16 @@ namespace Dogabeey
             }
         }
 
+        public static void TriggerEvent(string eventName)
+        {
+            EventParam eventParam = new EventParam();
+            Action<EventParam> thisEvent = null;
+            if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+            {
+                thisEvent.Invoke(eventParam);
+                // OR USE  instance.eventDictionary[eventName](eventParam);
+            }
+        }
         public static void TriggerEvent(string eventName, EventParam eventParam)
         {
             Action<EventParam> thisEvent = null;

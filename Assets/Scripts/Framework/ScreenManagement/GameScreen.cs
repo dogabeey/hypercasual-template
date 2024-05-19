@@ -7,6 +7,16 @@ namespace Dogabeey
     public class GameScreen : SerializedMonoBehaviour
     {
         public Screens screenID;
+        public Animator animator;
+        public string playAnimationName;
+
+        private void OnValidate()
+        {
+            if (animator == null)
+            {
+                TryGetComponent(out animator);
+            }
+        }
     }
 
 }
