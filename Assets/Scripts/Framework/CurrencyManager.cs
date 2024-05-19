@@ -25,29 +25,34 @@ namespace Dogabeey
             get => PlayerPrefs.GetFloat("Coin", 0);
             set
             {
-                PlayerPrefs.GetFloat("Coin", value);
+                PlayerPrefs.SetFloat("Coin", value);
                 UpdateCoinText();
             }
         }
         public float PremiumCurrency
         {
-            get => PlayerPrefs.GetFloat("PremiumCurrency", 0); 
-            set => PlayerPrefs.GetFloat("PremiumCurrency", value); 
+            get => PlayerPrefs.GetFloat("PremiumCurrency", 0);
+            set
+            {
+                PlayerPrefs.SetFloat("PremiumCurrency", value);
+                UpdateCurrencyText();
+            }
         }
 
         private void Start()
         {
             UpdateCoinText();
+            UpdateCurrencyText();
         }
 
-        public void AddCoin(int coinAmount, GameObject source = null)
+        public void AddCoin(float coinAmount, GameObject source = null)
         {
             if(source != null)
             {
                 AddCoinAnimation(source.transform.position, coinTransform.position, coinAmount);
             }
         }
-        public void AddPremiumCurrency(int premiumCurrencyAmount, GameObject source = null)
+        public void AddPremiumCurrency(float premiumCurrencyAmount, GameObject source = null)
         {
             if (source != null)
             {
@@ -56,19 +61,19 @@ namespace Dogabeey
             PremiumCurrency += premiumCurrencyAmount;
         }
         
-        private void AddCoinAnimation(Vector3 sourcePosition, Vector3  targetPosition, int coinAmount)
+        private void AddCoinAnimation(Vector3 sourcePosition, Vector3  targetPosition, float coinAmount)
         {
             StartCoroutine(AddCoinAnimationCoroutine(sourcePosition, targetPosition, coinAmount));
         }
-        private IEnumerator AddCoinAnimationCoroutine(Vector3 sourcePosition, Vector3 targetPosition, int coinAmount)
+        private IEnumerator AddCoinAnimationCoroutine(Vector3 sourcePosition, Vector3 targetPosition, float coinAmount)
         {
-            int coinSpriteAmount = Mathf.CeilToInt((Coin + coinAmount * coinSpriteMultiplier) / Coin);
+            int coinSpriteAmount = Coin == 0 ? Mathf.CeilToInt((Coin + coinAmount * coinSpriteMultiplier) / 100) : Mathf.CeilToInt((Coin + coinAmount * coinSpriteMultiplier) / Coin);
             for (int i = 0; i < coinSpriteAmount; i++)
             {
                 SpriteRenderer coinSprite = Instantiate(coinSpritePrefab, sourcePosition, Quaternion.identity);
                 coinSprite.transform.SetParent(coinTransform);
                 yield return coinSprite.transform.DOMove(targetPosition, flightDuration).SetEase(Ease.InOutQuad).WaitForCompletion();
-                Coin += coinAmount / coinSpriteAmount;
+                Coin += coinAmount / (float) coinSpriteAmount;
                 Destroy(coinSprite.gameObject);
             }
 
@@ -77,7 +82,11 @@ namespace Dogabeey
 
         void UpdateCoinText()
         {
-            coinText.text = Mathf.CeilToInt(Coin).ToString();
+            coinText.text = Mathf.FloorToInt(Coin).ToString();
+        }
+        void UpdateCurrencyText()
+        {
+            currencyText.text = Mathf.FloorToInt(PremiumCurrency).ToString();
         }
     }
 }

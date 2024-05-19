@@ -45,9 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
+  coinText: {fileID: 0}
   coinTransform: {fileID: 0}
+  coinSpritePrefab: {fileID: 6600527556817516632, guid: 0bb994df5a34fab418c2b7cd753ad551, type: 3}
+  currencyText: {fileID: 0}
   premiumCurrencyTransform: {fileID: 0}
-  coinSpritePrefab: {fileID: 0}
-  premiumCurrencySpritePrefab: {fileID: 0}
-  flightDuration: 0.1
-  coinSpriteMultiplier: 10
+  premiumCurrencySpritePrefab: {fileID: 6600527556817516632, guid: d12243bc75b32b64d9a4dd0ec103dba9, type: 3}
+  flightDuration: 0.2
+  coinSpriteMultiplier: 5

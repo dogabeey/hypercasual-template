@@ -20,10 +20,17 @@ namespace Dogabeey
             }
             if (Input.GetKeyDown(KeyCode.C))
             {
-                if(coinSource != null)
+                if (coinSource != null)
                     CurrencyManager.Instance.AddCoin(100, coinSource);
                 else
                     CurrencyManager.Instance.AddCoin(100);
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (coinSource != null)
+                    CurrencyManager.Instance.AddPremiumCurrency(1, coinSource);
+                else
+                    CurrencyManager.Instance.AddPremiumCurrency(1);
             }
         }
     }
