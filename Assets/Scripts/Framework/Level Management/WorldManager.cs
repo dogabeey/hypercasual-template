@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,11 +42,13 @@ namespace Dogabeey
         }
         void OnLevelCompleted(EventParam param)
         {
-            ScreenManager.Instance.Show(Screens.WinScreen);
+            DOVirtual.DelayedCall(1, () =>
+            ScreenManager.Instance.Show(Screens.WinScreen));
         }
         void OnLevelFailed(EventParam param)
         {
-            ScreenManager.Instance.Show(Screens.LoseScreen);
+            DOVirtual.DelayedCall(1, () =>
+            ScreenManager.Instance.Show(Screens.LoseScreen));
         }
 
         private void Start()
