@@ -6,6 +6,8 @@ namespace Dogabeey
 {
     public class DebugManager : MonoBehaviour
     {
+        public GameObject coinSource;
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.W))
@@ -15,6 +17,13 @@ namespace Dogabeey
             if (Input.GetKeyDown(KeyCode.F))
             {
                 EventManager.TriggerEvent(Const.GameEvents.LEVEL_FAILED);
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                if(coinSource != null)
+                    CurrencyManager.Instance.AddCoin(100, coinSource);
+                else
+                    CurrencyManager.Instance.AddCoin(100);
             }
         }
     }
