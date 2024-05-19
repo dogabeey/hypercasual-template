@@ -280,7 +280,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 210431006}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1033335108}
+        m_TargetAssemblyTypeName: Dogabeey.WorldManager, Assembly-CSharp
+        m_MethodName: ResetCurrentLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1269927695}
+        m_TargetAssemblyTypeName: Dogabeey.ScreenManager, Assembly-CSharp
+        m_MethodName: CloseAllScreens
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &219198484
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,7 +1292,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 769963975}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1033335108}
+        m_TargetAssemblyTypeName: Dogabeey.WorldManager, Assembly-CSharp
+        m_MethodName: LoadNextLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1269927695}
+        m_TargetAssemblyTypeName: Dogabeey.ScreenManager, Assembly-CSharp
+        m_MethodName: CloseAllScreens
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &803259004
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,6 +1801,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7722314759461277707, guid: e4052a4b50fee524d98d042dbbd13183, type: 3}
   m_PrefabInstance: {fileID: 7722314758848078152}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1033335108 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7722314759461277706, guid: e4052a4b50fee524d98d042dbbd13183, type: 3}
+  m_PrefabInstance: {fileID: 7722314758848078152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be8719f9cfba3c40a740e889389a35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1149696647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,7 +1831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1149696648
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2001,6 +2060,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1249756586}
   m_CullTransparentMesh: 1
+--- !u!114 &1269927695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2547576709511450939, guid: 70bd33374545fe1428a509f86d0456fd, type: 3}
+  m_PrefabInstance: {fileID: 5532669354995979708}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4e01d7881730e4c9a5310902158970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1285035636
 GameObject:
   m_ObjectHideFlags: 0

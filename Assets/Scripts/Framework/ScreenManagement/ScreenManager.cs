@@ -33,6 +33,10 @@ namespace Dogabeey
             GameScreen gameScreen = screens.Find(screen => screen.screenID == screenID);
             ShowScreen(gameScreen);
         }
+        public void CloseAllScreens()
+        {
+            screens.ForEach(screen => screen.gameObject.SetActive(false));
+        }
 
         private static void ShowScreen(GameScreen gameScreen)
         {
