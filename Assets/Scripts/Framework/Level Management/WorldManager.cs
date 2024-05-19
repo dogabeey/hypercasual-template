@@ -12,6 +12,7 @@ namespace Dogabeey
         [Header("References")]
         public List<World> worlds;
         public Transform levelContainer;
+        public ParticleSystem winParticle;
 
         private World currentWorld;
 
@@ -42,6 +43,7 @@ namespace Dogabeey
         }
         void OnLevelCompleted(EventParam param)
         {
+            winParticle.Play();
             DOVirtual.DelayedCall(1, () =>
             ScreenManager.Instance.Show(Screens.WinScreen));
         }
