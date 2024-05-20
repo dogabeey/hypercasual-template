@@ -5,8 +5,8 @@ using Unity.Services.Mediation;
 
 public class UnityAdsManager : MonoBehaviour
 {
-    private string gameId = "YOUR_GAME_ID";
-    private string adUnitId = "YOUR_AD_UNIT_ID";
+    private string gameId;
+    private string adUnitId;
     public float adInterval = 300.0f; // Time interval between ads in seconds
     private float timeSinceLastAd;
 
@@ -15,6 +15,17 @@ public class UnityAdsManager : MonoBehaviour
     async void Start()
     {
         timeSinceLastAd = 0.0f;
+
+#if UNITY_ANDROID
+        gameId = "5622038"; // Replace with your actual Android Game ID
+        adUnitId = "Interstitial_Android"; // Replace with your actual Android Ad Unit ID
+#elif UNITY_IOS
+        gameId = "5622039"; // Replace with your actual iOS Game ID
+        adUnitId = "Interstitial_iOS"; // Replace with your actual iOS Ad Unit ID
+#else
+        Debug.LogError("Unsupported platform");
+        return;
+#endif
 
         try
         {
