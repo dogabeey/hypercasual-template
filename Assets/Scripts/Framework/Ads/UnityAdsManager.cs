@@ -2,26 +2,49 @@ using System;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Mediation;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class UnityAdsManager : MonoBehaviour
 {
-    private string gameId;
-    private string adUnitId;
     public float adInterval = 300.0f; // Time interval between ads in seconds
-    private float timeSinceLastAd;
 
+    internal UnityEvent<object, EventArgs> onAdClosedEvent;
+    internal UnityEvent<object, ShowErrorEventArgs> onAdFailedShowEvent;
+    internal UnityEvent<object, EventArgs> onAdLoadedEvent;
+    internal UnityEvent<object, LoadErrorEventArgs> onAdFailedLoadEvent;
+    internal UnityEvent<object, EventArgs> onAdClickedEvent;
+    internal UnityEvent<object, EventArgs> onRewardedClosedEvent;
+    internal UnityEvent<object, ShowErrorEventArgs> onRewardedFailedShowEvent;
+    internal UnityEvent<object, EventArgs> onRewardedLoadedEvent;
+    internal UnityEvent<object, LoadErrorEventArgs> onRewardedFailedLoadEvent;
+    internal UnityEvent<object, EventArgs> onRewardedClickedEvent;
+    internal UnityEvent<object, EventArgs> onBannerClickedEvent;
+
+
+    private string gameId;
+    private string IS_adUnitId;
+    private string RW_adUnitId;
+    private string Banner_adUnitId;
+    private float timeSinceLastAd;
     private IInterstitialAd interstitialAd;
+    private IRewardedAd rewardedAd;
+    private IBannerAd bannerAd;
 
     async void Start()
     {
         timeSinceLastAd = 0.0f;
 
 #if UNITY_ANDROID
-        gameId = "5622038"; // Replace with your actual Android Game ID
-        adUnitId = "Interstitial_Android"; // Replace with your actual Android Ad Unit ID
+        gameId = "5622038";
+        IS_adUnitId = "Interstitial_Android";
+        RW_adUnitId = "Rewarded_Android";
+        Banner_adUnitId = "Banner_Android";
 #elif UNITY_IOS
         gameId = "5622039"; // Replace with your actual iOS Game ID
-        adUnitId = "Interstitial_iOS"; // Replace with your actual iOS Ad Unit ID
+        IS_adUnitId = "Interstitial_iOS"; // Replace with your actual iOS Ad Unit ID
+        RW_adUnitId = "Rewarded_iOS"; // Replace with your actual iOS Ad Unit ID
+        Banner_adUnitId = "Banner_iOS"; // Replace with your actual iOS Ad Unit ID
 #else
         Debug.LogError("Unsupported platform");
         return;
@@ -33,13 +56,24 @@ public class UnityAdsManager : MonoBehaviour
             await UnityServices.InitializeAsync();
 
             // Create an instance of the interstitial ad
-            interstitialAd = MediationService.Instance.CreateInterstitialAd(adUnitId);
+            interstitialAd = MediationService.Instance.CreateInterstitialAd(IS_adUnitId);
+            rewardedAd = MediationService.Instance.CreateRewardedAd(RW_adUnitId);
+            bannerAd = MediationService.Instance.CreateBannerAd(Banner_adUnitId, new BannerAdSize(BannerAdPredefinedSize.Banner), BannerAdAnchor.BottomCenter);
 
             // Subscribe to events
             interstitialAd.OnClosed += OnAdClosed;
             interstitialAd.OnFailedShow += OnAdFailedShow;
             interstitialAd.OnLoaded += OnAdLoaded;
             interstitialAd.OnFailedLoad += OnAdFailedLoad;
+            interstitialAd.OnClicked += OnAdClicked;
+
+            rewardedAd.OnClosed += OnRewardedClosed;
+            rewardedAd.OnFailedShow += OnRewardedFailedShow;
+            rewardedAd.OnLoaded += OnRewardedLoaded;
+            rewardedAd.OnFailedLoad += OnRewardedFailedLoad;
+            interstitialAd.OnClicked += OnRewardedClicked;
+
+            bannerAd.OnClicked += OnBannerClicked;
 
             // Load the ad
             await interstitialAd.LoadAsync();
@@ -48,6 +82,11 @@ public class UnityAdsManager : MonoBehaviour
         {
             Debug.LogError($"Unity Services initialization failed: {e}");
         }
+    }
+
+    private void OnBannerClicked(object sender, EventArgs e)
+    {
+        Debug.Log("Banner clicked");
     }
 
     void Update()
@@ -76,23 +115,57 @@ public class UnityAdsManager : MonoBehaviour
     private void OnAdClosed(object sender, EventArgs e)
     {
         Debug.Log("Ad closed");
-        interstitialAd.LoadAsync();
+        onAdClickedEvent.Invoke(sender, e);
     }
 
     private void OnAdFailedShow(object sender, ShowErrorEventArgs e)
     {
         Debug.LogError($"Ad failed to show: {e.Message}");
+        onAdFailedShowEvent.Invoke(sender, e);
     }
 
     private void OnAdLoaded(object sender, EventArgs e)
     {
         Debug.Log("Ad loaded");
+        onAdLoadedEvent.Invoke(sender, e);
     }
 
     private void OnAdFailedLoad(object sender, LoadErrorEventArgs e)
     {
         Debug.LogError($"Ad failed to load: {e.Message}");
+        onAdFailedLoadEvent.Invoke(sender, e);
     }
+    private void OnRewardedClosed(object sender, EventArgs e)
+    {
+        Debug.Log("Rewarded Ad closed");
+        onRewardedClosedEvent.Invoke(sender, e);
+    }
+    private void OnRewardedFailedShow(object sender, ShowErrorEventArgs e)
+    {
+        Debug.LogError($"Rewarded Ad failed to show: {e.Message}");
+        onRewardedFailedShowEvent.Invoke(sender, e);
+    }
+    private void OnRewardedLoaded(object sender, EventArgs e)
+    {
+        Debug.Log("Rewarded Ad loaded");
+        onRewardedLoadedEvent.Invoke(sender, e);
+    }
+    private void OnRewardedFailedLoad(object sender, LoadErrorEventArgs e)
+    {
+        Debug.LogError($"Rewarded Ad failed to load: {e.Message}");
+        onRewardedFailedLoadEvent.Invoke(sender, e);
+    }
+    private void OnAdClicked(object sender, EventArgs e)
+    {
+        Debug.Log("Ad clicked");
+        onAdClickedEvent.Invoke(sender, e);
+    }
+    private void OnRewardedClicked(object sender, EventArgs e)
+    {
+        Debug.Log("Rewarded Ad clicked");
+        onRewardedClickedEvent.Invoke(sender, e);
+    }
+
 
     private void OnDestroy()
     {
