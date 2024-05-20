@@ -9,150 +9,82 @@ using UnityEngine.UI;
 
 namespace Dogabeey
 {
-    public class SettingsManager : SingletonComponent<SettingsManager>, ISaveable
+    public class SettingsManager : SingletonComponent<SettingsManager>
     {
-        public string SaveId => "Settings_Manager";
-
         [Header("References")]
         public VolumeProfile globalVolume;
         [Header("Default Values")]
-        public float movementSensitivty = 0.5f;
-        [Space]
-        public bool isFullscreen = true;
-        [Space]
-        public float masterVolume = 1;
         public float musicVolume = 1;
         public float sfxVolume = 1;
-        public float lightIntensity = 0;
+        public bool vibration = true;
         [Header("Settings UI")]
-        public Slider movementSensitivitySlider;
-        [Space]
-        public Toggle fullscreenToggle;
-        public Slider lightIntensitySlider;
-        [Space]
-        public Slider masterVolumeSlider;
         public Slider musicVolumeSlider;
         public Slider sfxVolumeSlider;
+        public Toggle vibrationToggle;
 
-
-        public Dictionary<string, object> Save()
+        public float MusicVolume
         {
-            Dictionary<string, object> saveData = new Dictionary<string, object>
+            get => PlayerPrefs.GetFloat("MusicVolume", musicVolume);
+            set
             {
-                { "movementSensitivty", movementSensitivty },
-                { "isFullscreen", isFullscreen },
-                { "lightIntensity", lightIntensity },
-                { "masterVolume", masterVolume },
-                { "musicVolume", musicVolume },
-                { "sfxVolume", sfxVolume }
-            };
-
-            return saveData;
-        }
-
-        public bool Load()
-        {
-            JSONNode saveData = SaveManager.Instance.LoadSave(this);
-
-            if (saveData == null)
-            {
-                return false;
+                PlayerPrefs.SetFloat("MusicVolume", value);
             }
-
-            movementSensitivty = (float) saveData["movementSensitivty"];
-            isFullscreen = (bool)saveData["isFullscreen"];
-            lightIntensity = (float)saveData["lightIntensity"];
-            masterVolume = (float)saveData["masterVolume"];
-            musicVolume = (float)saveData["musicVolume"];
-            sfxVolume = (float)saveData["sfxVolume"];
-
-            return true;
+        }
+        public float SfxVolume
+        {
+            get => PlayerPrefs.GetFloat("SfxVolume", sfxVolume);
+            set
+            {
+                PlayerPrefs.SetFloat("SfxVolume", value);
+            }
+        }
+        public bool Vibration
+        {
+            get => PlayerPrefs.GetInt("Vibration", vibration ? 1 : 0) == 1;
+            set
+            {
+                PlayerPrefs.SetInt("Vibration", value ? 1 : 0);
+            }
         }
 
         protected override void Awake()
         {
             base.Awake();
-            SaveManager.Instance.Register(this);
-
 
         }
 
         private void Start()
         {
-            if (!Load())
-            {
-                // Add default settings here. We are using Set methods because some of them may contain additional logic.
-                SetMovementSensitivity(0.5f);
-
-                SetFullScreen(true);
-                SetLightIntensity(0);
-
-                SetMasterVolume(1);
-                SetMusicVolume(1);
-                SetSFXVolume(1);
-            }
+            // Add default settings here. We are using Set methods because some of them may contain additional logic.
+            SetMusicVolume(musicVolume);
+            SetSFXVolume(sfxVolume);
+            SetVibration(vibration);
 
             // Set UI with the default settings.
-            movementSensitivitySlider.value = movementSensitivty;
-
-            fullscreenToggle.isOn = isFullscreen;
-            lightIntensitySlider.value = lightIntensity;
-
-            masterVolumeSlider.value = masterVolume;
             musicVolumeSlider.value = musicVolume;
             sfxVolumeSlider.value = sfxVolume;
+            vibrationToggle.isOn = vibration;
         }
 
         private void OnEnable()
         {
             // Add listeners to the UI elements.
-            movementSensitivitySlider.onValueChanged.AddListener(SetMovementSensitivity);
-
-            fullscreenToggle.onValueChanged.AddListener(SetFullScreen);
-            lightIntensitySlider.onValueChanged.AddListener(SetLightIntensity);
-
-            masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
             musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
             sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+            vibrationToggle.onValueChanged.AddListener(SetVibration);
         }
         private void OnDisable()
         {
             // Remove listeners to avoid errors.
-            movementSensitivitySlider.onValueChanged.RemoveAllListeners();
-
-            fullscreenToggle.onValueChanged.RemoveAllListeners();
-            lightIntensitySlider.onValueChanged.RemoveAllListeners();
-
-            masterVolumeSlider.onValueChanged.RemoveAllListeners();
             musicVolumeSlider.onValueChanged.RemoveAllListeners();
             sfxVolumeSlider.onValueChanged.RemoveAllListeners();
+            vibrationToggle.onValueChanged.RemoveAllListeners();
         }
 
         #region Unity Editor Methods
-        public void SetMovementSensitivity(float value)
-        {
-            movementSensitivty = value;
-        }
-        public void SetFullScreen(bool value)
-        {
-            isFullscreen = value;
-            Screen.fullScreen = isFullscreen;
-        }
-        public void SetMasterVolume(float value)
-        {
-            masterVolume = value;
-            SoundManager.Instance.playingAudioSources.ForEach(p =>
-            {
-                p.audioSource.volume = masterVolume;
-            });
-            SoundManager.Instance.loopingAudioSources.ForEach(p =>
-            {
-                p.audioSource.volume = masterVolume;
-            });
-        }
         public void SetMusicVolume(float value)
         {
-            musicVolume = value;
+            MusicVolume = value;
             SoundManager.Instance.loopingAudioSources.ForEach(p =>
             {
                 p.audioSource.volume = musicVolume;
@@ -160,19 +92,15 @@ namespace Dogabeey
         }
         public void SetSFXVolume(float value)
         {
-            sfxVolume = value;
+            SfxVolume = value;
             SoundManager.Instance.playingAudioSources.ForEach(p =>
             {
                 p.audioSource.volume = sfxVolume;
             });
         }
-        public void SetLightIntensity(float value)
+        public void SetVibration(bool value)
         {
-            lightIntensity = value;
-            if(globalVolume.TryGet(out Bloom bloom))
-            {
-                bloom.intensity.value = 3 + lightIntensity;
-            }
+            Vibration = value;
         }
         #endregion
     }
