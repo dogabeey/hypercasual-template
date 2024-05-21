@@ -9,17 +9,17 @@ public class UnityAdsManager : MonoBehaviour
 {
     public float adInterval = 300.0f; // Time interval between ads in seconds
 
-    internal UnityEvent<object, EventArgs> onAdClosedEvent;
-    internal UnityEvent<object, ShowErrorEventArgs> onAdFailedShowEvent;
-    internal UnityEvent<object, EventArgs> onAdLoadedEvent;
-    internal UnityEvent<object, LoadErrorEventArgs> onAdFailedLoadEvent;
-    internal UnityEvent<object, EventArgs> onAdClickedEvent;
-    internal UnityEvent<object, EventArgs> onRewardedClosedEvent;
-    internal UnityEvent<object, ShowErrorEventArgs> onRewardedFailedShowEvent;
-    internal UnityEvent<object, EventArgs> onRewardedLoadedEvent;
-    internal UnityEvent<object, LoadErrorEventArgs> onRewardedFailedLoadEvent;
-    internal UnityEvent<object, EventArgs> onRewardedClickedEvent;
-    internal UnityEvent<object, EventArgs> onBannerClickedEvent;
+    internal UnityEvent<object, EventArgs> onAdClosedEvent = new();
+    internal UnityEvent<object, ShowErrorEventArgs> onAdFailedShowEvent = new();
+    internal UnityEvent<object, EventArgs> onAdLoadedEvent = new();
+    internal UnityEvent<object, LoadErrorEventArgs> onAdFailedLoadEvent = new();
+    internal UnityEvent<object, EventArgs> onAdClickedEvent = new();
+    internal UnityEvent<object, EventArgs> onRewardedClosedEvent = new();
+    internal UnityEvent<object, ShowErrorEventArgs> onRewardedFailedShowEvent = new();
+    internal UnityEvent<object, EventArgs> onRewardedLoadedEvent = new();
+    internal UnityEvent<object, LoadErrorEventArgs> onRewardedFailedLoadEvent = new();
+    internal UnityEvent<object, EventArgs> onRewardedClickedEvent = new();
+    internal UnityEvent<object, EventArgs> onBannerClickedEvent = new();
 
 
     private string gameId;
@@ -71,7 +71,7 @@ public class UnityAdsManager : MonoBehaviour
             rewardedAd.OnFailedShow += OnRewardedFailedShow;
             rewardedAd.OnLoaded += OnRewardedLoaded;
             rewardedAd.OnFailedLoad += OnRewardedFailedLoad;
-            interstitialAd.OnClicked += OnRewardedClicked;
+            rewardedAd.OnClicked += OnRewardedClicked;
 
             bannerAd.OnClicked += OnBannerClicked;
 

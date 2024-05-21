@@ -16,11 +16,9 @@ namespace Dogabeey
         [Header("Default Values")]
         public float musicVolume = 1;
         public float sfxVolume = 1;
-        public bool vibration = true;
         [Header("Settings UI")]
         public Slider musicVolumeSlider;
         public Slider sfxVolumeSlider;
-        public Toggle vibrationToggle;
 
         public float MusicVolume
         {
@@ -38,14 +36,6 @@ namespace Dogabeey
                 PlayerPrefs.SetFloat("SfxVolume", value);
             }
         }
-        public bool Vibration
-        {
-            get => PlayerPrefs.GetInt("Vibration", vibration ? 1 : 0) == 1;
-            set
-            {
-                PlayerPrefs.SetInt("Vibration", value ? 1 : 0);
-            }
-        }
 
         protected override void Awake()
         {
@@ -58,12 +48,10 @@ namespace Dogabeey
             // Add default settings here. We are using Set methods because some of them may contain additional logic.
             SetMusicVolume(musicVolume);
             SetSFXVolume(sfxVolume);
-            SetVibration(vibration);
 
             // Set UI with the default settings.
             musicVolumeSlider.value = musicVolume;
             sfxVolumeSlider.value = sfxVolume;
-            vibrationToggle.isOn = vibration;
         }
 
         private void OnEnable()
@@ -71,14 +59,12 @@ namespace Dogabeey
             // Add listeners to the UI elements.
             musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
             sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
-            vibrationToggle.onValueChanged.AddListener(SetVibration);
         }
         private void OnDisable()
         {
             // Remove listeners to avoid errors.
             musicVolumeSlider.onValueChanged.RemoveAllListeners();
             sfxVolumeSlider.onValueChanged.RemoveAllListeners();
-            vibrationToggle.onValueChanged.RemoveAllListeners();
         }
 
         #region Unity Editor Methods
@@ -97,10 +83,6 @@ namespace Dogabeey
             {
                 p.audioSource.volume = sfxVolume;
             });
-        }
-        public void SetVibration(bool value)
-        {
-            Vibration = value;
         }
         #endregion
     }
