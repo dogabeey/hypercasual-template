@@ -77,6 +77,8 @@ public class UnityAdsManager : MonoBehaviour
 
             // Load the ad
             await interstitialAd.LoadAsync();
+            await rewardedAd.LoadAsync();
+            await bannerAd.LoadAsync();
         }
         catch (Exception e)
         {
@@ -111,10 +113,22 @@ public class UnityAdsManager : MonoBehaviour
             Debug.Log("Advertisement not ready");
         }
     }
+    public void LoadRewardedAd()
+    {
+        if (rewardedAd.AdState == AdState.Loaded)
+        {
+            rewardedAd.ShowAsync();
+        }
+        else
+        {
+            Debug.Log("Rewarded Ad not ready");
+        }
+    }
 
     private void OnAdClosed(object sender, EventArgs e)
     {
         Debug.Log("Ad closed");
+        interstitialAd.LoadAsync();
         onAdClickedEvent.Invoke(sender, e);
     }
 
@@ -138,6 +152,7 @@ public class UnityAdsManager : MonoBehaviour
     private void OnRewardedClosed(object sender, EventArgs e)
     {
         Debug.Log("Rewarded Ad closed");
+        rewardedAd.LoadAsync();
         onRewardedClosedEvent.Invoke(sender, e);
     }
     private void OnRewardedFailedShow(object sender, ShowErrorEventArgs e)

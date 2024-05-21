@@ -46,12 +46,12 @@ namespace Dogabeey
         private void Start()
         {
             // Add default settings here. We are using Set methods because some of them may contain additional logic.
-            SetMusicVolume(musicVolume);
-            SetSFXVolume(sfxVolume);
+            SetMusicVolume(MusicVolume);
+            SetSFXVolume(SfxVolume);
 
             // Set UI with the default settings.
-            musicVolumeSlider.value = musicVolume;
-            sfxVolumeSlider.value = sfxVolume;
+            musicVolumeSlider.value = MusicVolume;
+            sfxVolumeSlider.value = SfxVolume;
         }
 
         private void OnEnable()
@@ -73,7 +73,7 @@ namespace Dogabeey
             MusicVolume = value;
             SoundManager.Instance.loopingAudioSources.ForEach(p =>
             {
-                p.audioSource.volume = musicVolume;
+                p.audioSource.volume = MusicVolume;
             });
         }
         public void SetSFXVolume(float value)
@@ -81,7 +81,7 @@ namespace Dogabeey
             SfxVolume = value;
             SoundManager.Instance.playingAudioSources.ForEach(p =>
             {
-                p.audioSource.volume = sfxVolume;
+                p.audioSource.volume = SfxVolume;
             });
         }
         #endregion
