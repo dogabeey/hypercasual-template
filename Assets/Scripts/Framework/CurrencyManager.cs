@@ -9,14 +9,22 @@ namespace Dogabeey
 {
     public class CurrencyManager : SingletonComponent<CurrencyManager>
     {
+        [System.Serializable]
+        public class CurrencyModel 
+        {
+            public string currencyID;
+            public float startingAmount;
+            public Transform currencyTransform;
+            public SpriteRenderer currencySpritePrefab;
+            public TMP_Text currencyText;
+            public float Amount { get => PlayerPrefs.GetFloat("Currency_" + currencyID, startingAmount); set => PlayerPrefs.SetFloat("Currency_" + currencyID, value); }
+        }
+
         [Header("Coin")]
         public TMP_Text coinText;
         public Transform coinTransform;
         public SpriteRenderer coinSpritePrefab;
-        [Header("Premium Currency")]
-        public TMP_Text currencyText;
-        public Transform premiumCurrencyTransform;
-        public SpriteRenderer premiumCurrencySpritePrefab;
+        public List<CurrencyModel> currencyModels;
         [Header("Animation Settings")]
         public float flightDuration = 0.1f;
         public float coinSpriteMultiplier = 10;
@@ -29,21 +37,17 @@ namespace Dogabeey
                 UpdateCoinText();
             }
         }
-        public float PremiumCurrency
-        {
-            get => PlayerPrefs.GetFloat("PremiumCurrency", 0);
-            set
-            {
-                PlayerPrefs.SetFloat("PremiumCurrency", value);
-                UpdateCurrencyText();
-            }
-        }
 
         private void Start()
         {
             UpdateCoinText();
             UpdateCurrencyText();
         }
+        private void Update()
+        {
+            UpdateCurrencyText();
+        }
+
 
         public void AddCoin(float coinAmount, GameObject source = null)
         {
@@ -52,13 +56,15 @@ namespace Dogabeey
                 AddCoinAnimation(source.transform.position, coinTransform.position, coinAmount);
             }
         }
-        public void AddPremiumCurrency(float premiumCurrencyAmount, GameObject source = null)
+        public void AddPremiumCurrency(string currencyID, float premiumCurrencyAmount, GameObject source = null)
         {
+            CurrencyModel currencyModel = currencyModels.Find(x => x.currencyID == currencyID);
             if (source != null)
             {
-                AddCoinAnimation(source.transform.position, premiumCurrencyTransform.position, premiumCurrencyAmount);
+                AddCoinAnimation(source.transform.position, currencyModel.currencyTransform.position, premiumCurrencyAmount);
             }
-            PremiumCurrency += premiumCurrencyAmount;
+
+            currencyModel.Amount += premiumCurrencyAmount;
         }
         
         private void AddCoinAnimation(Vector3 sourcePosition, Vector3  targetPosition, float coinAmount)
@@ -83,10 +89,14 @@ namespace Dogabeey
         void UpdateCoinText()
         {
             coinText.text = Mathf.FloorToInt(Coin).ToString();
+
         }
-        void UpdateCurrencyText()
+        private void UpdateCurrencyText()
         {
-            currencyText.text = Mathf.FloorToInt(PremiumCurrency).ToString();
+            foreach (var currencyModel in currencyModels)
+            {
+                currencyModel.currencyText.text = Mathf.FloorToInt(currencyModel.Amount).ToString();
+            }
         }
     }
 }
