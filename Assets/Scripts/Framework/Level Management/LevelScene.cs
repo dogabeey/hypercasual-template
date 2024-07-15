@@ -20,6 +20,7 @@ namespace Dogabeey
         private void Awake()
         {
             Instance = this;
+            EventManager.TriggerEvent(Const.GameEvents.LEVEL_STARTED, new EventParam());
         }
 
         private void Update()

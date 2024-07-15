@@ -4,10 +4,12 @@ using Unity.Services.Core;
 using Unity.Services.Mediation;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using Dogabeey;
 
-public class UnityAdsManager : MonoBehaviour
+public class UnityAdsManager : SingletonComponent<UnityAdsManager>
 {
     public float adInterval = 300.0f; // Time interval between ads in seconds
+    public int levelInterval = 2; // Time interval between ads in seconds
 
     internal UnityEvent<object, EventArgs> onAdClosedEvent = new();
     internal UnityEvent<object, ShowErrorEventArgs> onAdFailedShowEvent = new();
@@ -30,6 +32,20 @@ public class UnityAdsManager : MonoBehaviour
     private IInterstitialAd interstitialAd;
     private IRewardedAd rewardedAd;
     private IBannerAd bannerAd;
+    private int levelsSinceLastAd = 0;
+
+    private void OnEnable()
+    {
+        EventManager.StartListening(Const.GameEvents.LEVEL_STARTED, OnLevelStarted);
+    }
+    private void OnDisable()
+    {
+        EventManager.StopListening(Const.GameEvents.LEVEL_STARTED, OnLevelStarted);
+    }
+    private void OnLevelStarted(EventParam e)
+    {
+        levelsSinceLastAd++;
+    }
 
     async void Start()
     {
@@ -95,14 +111,19 @@ public class UnityAdsManager : MonoBehaviour
     {
         timeSinceLastAd += Time.deltaTime;
 
-        if (timeSinceLastAd >= adInterval && interstitialAd.AdState == AdState.Loaded)
+    }
+
+    public void TryShowAd()
+    {
+        if (timeSinceLastAd >= adInterval && levelsSinceLastAd > levelInterval && interstitialAd.AdState == AdState.Loaded)
         {
             ShowAd();
             timeSinceLastAd = 0.0f;
+            levelsSinceLastAd = 0;
         }
     }
 
-    public void ShowAd()
+    private void ShowAd()
     {
         if (interstitialAd.AdState == AdState.Loaded)
         {
@@ -135,12 +156,14 @@ public class UnityAdsManager : MonoBehaviour
     private void OnAdFailedShow(object sender, ShowErrorEventArgs e)
     {
         Debug.LogError($"Ad failed to show: {e.Message}");
+        interstitialAd.LoadAsync();
         onAdFailedShowEvent.Invoke(sender, e);
     }
 
     private void OnAdLoaded(object sender, EventArgs e)
     {
         Debug.Log("Ad loaded");
+        interstitialAd.LoadAsync();
         onAdLoadedEvent.Invoke(sender, e);
     }
 
@@ -158,11 +181,13 @@ public class UnityAdsManager : MonoBehaviour
     private void OnRewardedFailedShow(object sender, ShowErrorEventArgs e)
     {
         Debug.LogError($"Rewarded Ad failed to show: {e.Message}");
+        rewardedAd.LoadAsync();
         onRewardedFailedShowEvent.Invoke(sender, e);
     }
     private void OnRewardedLoaded(object sender, EventArgs e)
     {
         Debug.Log("Rewarded Ad loaded");
+        rewardedAd.LoadAsync();
         onRewardedLoadedEvent.Invoke(sender, e);
     }
     private void OnRewardedFailedLoad(object sender, LoadErrorEventArgs e)
