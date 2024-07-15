@@ -24,7 +24,7 @@ namespace Dogabeey
 
         private LevelScene currentLevel;
 
-        internal LevelScene CurrentLevel { get => currentLevel;
+        public LevelScene CurrentLevel { get => currentLevel;
             set
             {
                 currentLevel = value;
