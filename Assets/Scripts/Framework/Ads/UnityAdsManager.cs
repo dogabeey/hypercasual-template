@@ -123,7 +123,7 @@ public class UnityAdsManager : SingletonComponent<UnityAdsManager>
         }
     }
 
-    private void ShowAd()
+    public void ShowAd()
     {
         if (interstitialAd.AdState == AdState.Loaded)
         {
@@ -134,7 +134,7 @@ public class UnityAdsManager : SingletonComponent<UnityAdsManager>
             Debug.Log("Advertisement not ready");
         }
     }
-    public void LoadRewardedAd()
+    public void ShowRewardedAd()
     {
         if (rewardedAd.AdState == AdState.Loaded)
         {
