@@ -4194,6 +4194,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 304687943}
     - target: {fileID: 1412219885008021530, guid: 91eb49e68eb92be4cb5694f681479a91, type: 3}
+      propertyPath: currencyInfos.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1412219885008021530, guid: 91eb49e68eb92be4cb5694f681479a91, type: 3}
       propertyPath: premiumCurrencyTransform
       value: 
       objectReference: {fileID: 1249756587}

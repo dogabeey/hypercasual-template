@@ -7,24 +7,22 @@ using TMPro;
 
 namespace Dogabeey
 {
-    public class CurrencyManager : SingletonComponent<CurrencyManager>
+    public partial class CurrencyManager : SingletonComponent<CurrencyManager>
     {
-        [System.Serializable]
-        public class CurrencyModel 
+        [Serializable]
+        public class CurrencyInfo
         {
-            public string currencyID;
-            public float startingAmount;
+            public CurrencyModel currencyModel;
             public Transform currencyTransform;
-            public SpriteRenderer currencySpritePrefab;
             public TMP_Text currencyText;
-            public float Amount { get => PlayerPrefs.GetFloat("Currency_" + currencyID, startingAmount); set => PlayerPrefs.SetFloat("Currency_" + currencyID, value); }
+            public float Amount { get => PlayerPrefs.GetFloat("Currency_" + currencyModel.currencyID, currencyModel.startingAmount); set => PlayerPrefs.SetFloat("Currency_" + currencyModel.currencyID, value); }
         }
 
         [Header("Coin")]
         public TMP_Text coinText;
         public Transform coinTransform;
         public SpriteRenderer coinSpritePrefab;
-        public List<CurrencyModel> currencyModels;
+        public List<CurrencyInfo> currencyInfos;
         [Header("Animation Settings")]
         public float flightDuration = 0.1f;
         public float coinSpriteMultiplier = 10;
@@ -56,9 +54,9 @@ namespace Dogabeey
                 AddCoinAnimation(source.transform.position, coinTransform.position, coinAmount);
             }
         }
-        public void AddPremiumCurrency(string currencyID, float premiumCurrencyAmount, GameObject source = null)
+        public void AddCurrency(string currencyID, float premiumCurrencyAmount, GameObject source = null)
         {
-            CurrencyModel currencyModel = currencyModels.Find(x => x.currencyID == currencyID);
+            CurrencyInfo currencyModel = currencyInfos.Find(x => x.currencyModel.currencyID == currencyID);
             if (source != null)
             {
                 AddCoinAnimation(source.transform.position, currencyModel.currencyTransform.position, premiumCurrencyAmount);
@@ -93,7 +91,7 @@ namespace Dogabeey
         }
         private void UpdateCurrencyText()
         {
-            foreach (var currencyModel in currencyModels)
+            foreach (var currencyModel in currencyInfos)
             {
                 currencyModel.currencyText.text = Mathf.FloorToInt(currencyModel.Amount).ToString();
             }
