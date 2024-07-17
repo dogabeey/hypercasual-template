@@ -96,5 +96,10 @@ namespace Dogabeey
                 currencyModel.currencyText.text = Mathf.FloorToInt(currencyModel.Amount).ToString();
             }
         }
+
+        internal float GetCurrencyAmount(CurrencyModel costCurrency)
+        {
+            return currencyInfos.Find(x => x.currencyModel == costCurrency).Amount;
+        }
     }
 }
