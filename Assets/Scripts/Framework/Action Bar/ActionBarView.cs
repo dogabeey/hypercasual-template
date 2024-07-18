@@ -24,17 +24,27 @@ namespace Dogabeey
             
         }
 
+        private void Update()
+        {
+            DrawUI();
+        }
+
         public void DrawUI()
         {
             if (actionBarItem != null)
             {
-                actionBarIcon.sprite = actionBarItem.actionBarIcon;
-                actionText.text = actionBarItem.actionName;
-                levelText.text = actionBarItem.CurrentLevel.ToString();
-                costText.text = actionBarItem.GetCost().ToString();
-
-                onClickButton.interactable = actionBarItem.isClickable;
-                canvasGroup.alpha = actionBarItem.isVisible ? 1 : 0;
+                if(actionBarIcon) 
+                    actionBarIcon.sprite = actionBarItem.actionBarIcon;
+                if(actionText) 
+                    actionText.text = actionBarItem.actionName;
+                if(levelText) 
+                    levelText.text = "LEVEL " + actionBarItem.CurrentLevel.ToString();
+                if (costText)
+                    costText.text = actionBarItem.GetCost().ConvertToKMB();
+                if (onClickButton)
+                    onClickButton.interactable = actionBarItem.isClickable;
+                if (canvasGroup)
+                    canvasGroup.alpha = actionBarItem.isVisible ? 1 : 0;
             }
         }
     }
