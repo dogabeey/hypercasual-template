@@ -599,7 +599,16 @@ MonoBehaviour:
   costCurrency: {fileID: 0}
   costCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.007080078
+      value: 30.0668
+      inSlope: 0.90909106
+      outSlope: 0.90909106
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

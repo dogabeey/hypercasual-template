@@ -12,10 +12,14 @@ namespace Dogabeey
     public abstract class ActionBarItem : MonoBehaviour
     {
         public string actionName;
+        [Header("References")]
         public Sprite actionBarIcon;
-        public CurrencyModel costCurrency;
-        public AnimationCurve costCurve;
         public Button onClickButton;
+        [Header("Cost Settings")]
+        public CurrencyModel costCurrency;
+        public float baseCost = 100;
+        public float costIncrement = 50;
+        public float costAcceleration = 10;
         [Header("Technical Settings")]
         public float visibilityCheckInterval = 0.1f;
         public float clickabilityCheckInterval = 0.1f;
@@ -24,7 +28,7 @@ namespace Dogabeey
 
         public int CurrentLevel
         {
-            get => PlayerPrefs.GetInt(actionName + "_level", 0);
+            get => PlayerPrefs.GetInt(actionName + "_level", 1);
             set => PlayerPrefs.SetInt(actionName + "_level", value);
         }
 
@@ -50,7 +54,8 @@ namespace Dogabeey
 
         public float GetCost()
         {
-            return costCurve.Evaluate(CurrentLevel) * CostMultiplier;
+            float costIncrement = this.costIncrement + (CurrentLevel - 1) * costAcceleration;
+            return baseCost + CurrentLevel * costIncrement;
         }
 
         private void SetVisibility()
