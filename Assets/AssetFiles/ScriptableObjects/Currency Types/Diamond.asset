@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 51dab175d7bbabd4ba800ef53b34235c, type: 3}
   m_Name: Diamond
   m_EditorClassIdentifier: Assembly-CSharp:Dogabeey:CurrencyModel
   currencyID: Diamond

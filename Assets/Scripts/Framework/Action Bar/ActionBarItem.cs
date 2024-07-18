@@ -52,10 +52,10 @@ namespace Dogabeey
 
         }
 
-        public float GetCost()
+        public int GetCost()
         {
-            float costIncrement = this.costIncrement + (CurrentLevel - 1) * costAcceleration;
-            return baseCost + CurrentLevel * costIncrement;
+            float costIncrement = this.costIncrement + (CurrentLevel - 2) * costAcceleration;
+            return Mathf.RoundToInt(baseCost + (CurrentLevel - 1) * costIncrement);
         }
 
         private void SetVisibility()
