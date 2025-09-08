@@ -31,6 +31,13 @@ namespace Dogabeey
         {
         }
 
+        public void OnApplicationPause()
+        {
+        }
+        public void OnApplicationQuit()
+        {
+        }
+
 
         public static void StartListening(string eventName, Action<EventParam> listener)
         {

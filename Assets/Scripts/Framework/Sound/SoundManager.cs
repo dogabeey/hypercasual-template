@@ -66,14 +66,6 @@ namespace Dogabeey
 
         #region Unity Methods
 
-        private IEnumerator Start()
-        {
-            yield return new WaitForSeconds(0.5f);
-
-
-            yield break;
-        }
-
         public void OnInit()
         {
 
@@ -115,6 +107,12 @@ namespace Dogabeey
                     i--;
                 }
             }
+        }
+        public void OnApplicationPause()
+        {
+        }
+        public void OnApplicationQuit()
+        {
         }
 
         #endregion

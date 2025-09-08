@@ -51,10 +51,6 @@ namespace Dogabeey
 
 		#region Unity Methods
 
-		private void Start()
-		{
-		}
-
 		private void OnDestroy()
 		{
 			if(saveOnQuit)
@@ -64,20 +60,22 @@ namespace Dogabeey
 			
 		}
 
-		private void OnApplicationPause(bool pause)
-		{
-			if (pause && saveOnQuit)
-			{
-				Save();
-			}
-		}
-
 		public void OnInit()
         {
             Debug.Log("Save file path: " + SaveFilePath);
         }
         public void OnUpdate()
         {
+        }
+        public void OnApplicationPause()
+        {
+        }
+        public void OnApplicationQuit(bool pause)
+        {
+            if (pause && saveOnQuit)
+            {
+                Save();
+            }
         }
 
         #endregion

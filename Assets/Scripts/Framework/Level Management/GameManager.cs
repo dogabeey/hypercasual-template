@@ -15,6 +15,8 @@ namespace Dogabeey
     {
         public void OnInit();
         public void OnUpdate();
+        public void OnApplicationPause();
+        public void OnApplicationQuit();
     }
 
     public class GameManager : SingletonComponent<GameManager>
@@ -69,13 +71,19 @@ namespace Dogabeey
 
         private void Start()
         {
+            eventManager.OnInit();
+            soundManager.OnInit();
+            saveManager.OnInit();
+
             Application.targetFrameRate = 60;
             CurrentWorld = worlds[0];
             LoadCurrentLevel();
         }
         private void Update()
         {
-            
+            eventManager.OnUpdate();
+            soundManager.OnUpdate();
+            saveManager.OnUpdate();
         }
 
         public void LoadLevel(LevelScene levelScene)
