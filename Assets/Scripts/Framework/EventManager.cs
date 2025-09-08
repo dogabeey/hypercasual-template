@@ -11,8 +11,6 @@ namespace Dogabeey
 
         private Dictionary<string, Action<EventParam>> eventDictionary;
 
-        private static EventManager eventManager;
-
         public static EventManager instance => GameManager.Instance.eventManager;
 
         void Init()
@@ -24,7 +22,7 @@ namespace Dogabeey
         }
         public void OnInit()
         {
-            eventManager.Init();
+            GameManager.Instance.eventManager.Init();
         }
 
         public void OnUpdate()
@@ -60,7 +58,7 @@ namespace Dogabeey
 
         public static void StopListening(string eventName, Action<EventParam> listener)
         {
-            if (eventManager == null) return;
+            if (GameManager.Instance.eventManager == null) return;
             Action<EventParam> thisEvent;
             if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
             {

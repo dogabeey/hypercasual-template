@@ -182,27 +182,6 @@ namespace Dogabeey
 			return json != null;
 		}
 
-
-		public void saveToCloud(string userId,string tag,object model)
-		{
-			Thread thread = new Thread(()=>{
-				//Firebase bos stringleri donuste okunamadigi icin yerine dolar koyuyoruz.
-				string js = JsonConvert.SerializeObject(model).Replace("\\u0000","$$");
-
-
-				// FirebaseDatabase.GetInstance(DATABASE_URL).GetReference("users").Child(userId).Child(tag).SetRawJsonValueAsync(js).ContinueWith((task => {
-				// 	if (task.IsFaulted) {
-				// 		Debug.Log("------->data save failed");
-				// 	}
-				// 	else if (task.IsCompleted) {
-				// 		Debug.Log("------->data saved successfully");
-				// 	}
-				// }));
-			});
-			thread.Start();
-			
-		}
-
 		#endregion
 	}
 }

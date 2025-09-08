@@ -69,8 +69,10 @@ namespace Dogabeey
             ScreenManager.Instance.Show(Screens.LoseScreen));
         }
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
+
             eventManager.OnInit();
             soundManager.OnInit();
             saveManager.OnInit();
