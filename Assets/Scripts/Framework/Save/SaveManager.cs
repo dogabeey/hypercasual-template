@@ -18,9 +18,9 @@ namespace Dogabeey
 
         private List<ISaveable>	saveables;
 		private JSONNode		loadedSave;
-		private const string LogTag = "SaveManager";
-		static string DATABASE_URL = "https://wordstones-users.firebaseio.com/";
-		[SerializeField] bool saveOnQuit = true;
+
+        public string saveID = "Save_1";
+        public bool saveOnQuit = true;
 
 		#endregion
 
@@ -70,9 +70,9 @@ namespace Dogabeey
         public void OnApplicationPause()
         {
         }
-        public void OnApplicationQuit(bool pause)
+        public void OnApplicationQuit()
         {
-            if (pause && saveOnQuit)
+            if (saveOnQuit)
             {
                 Save();
             }
@@ -95,7 +95,7 @@ namespace Dogabeey
 		/// </summary>
 		public JSONNode LoadSave(ISaveable saveable)
 		{
-			return LoadSave(saveable.SaveId);
+			return LoadSave(saveID + "_" + saveable.SaveId);
 		}
 
 		/// <summary>
@@ -103,8 +103,9 @@ namespace Dogabeey
 		/// </summary>
 		public JSONNode LoadSave(string saveId)
 		{
-			// Check if the save file has been loaded and if not try and load it
-			if (loadedSave == null && !LoadSave(out loadedSave))
+			saveId = saveID + "_" + saveId;
+            // Check if the save file has been loaded and if not try and load it
+            if (loadedSave == null && !LoadSave(out loadedSave))
 			{
 				return null;
 			}
@@ -117,16 +118,6 @@ namespace Dogabeey
 
 			// Return the JSONNode for the save id
 			return loadedSave[saveId];
-		}
-
-		public SimpleJSON.JSONObject LoadSaveObject(string saveId)
-		{
-			JSONNode node = LoadSave(saveId);
-			if(node == null)
-			{
-				return null;
-			}
-			return node.AsObject;
 		}
 
 		#endregion
@@ -144,19 +135,14 @@ namespace Dogabeey
 				for (int i = 0; i < saveables.Count; i++)
 				{
 					//saveJson.Add(saveables[i].SaveId, saveables[i].Save());
-					if(saveJson.ContainsKey(saveables[i].SaveId))
+					if(saveJson.ContainsKey(saveID + "_" + saveables[i].SaveId))
 					{
-						saveJson[saveables[i].SaveId] = saveables[i].Save();
+						saveJson[saveID + "_" + saveables[i].SaveId] = saveables[i].Save();
 					}else
 					{
-						saveJson.Add(saveables[i].SaveId, saveables[i].Save());
+						saveJson.Add(saveID + "_" + saveables[i].SaveId, saveables[i].Save());
 					}
 				}
-				
-				if(UserManager.currentUser != null){
-					saveToCloud(userId,"gameData",saveJson);
-				}
-				
 				
 				System.IO.File.WriteAllText(SaveFilePath, JsonConvert.SerializeObject(saveJson));
 			}
