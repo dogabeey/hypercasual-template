@@ -9,20 +9,12 @@ namespace Dogabeey
     public class EventManager : ScriptableObject, IManager
     {
 
-        private Dictionary<string, Action<EventParam>> eventDictionary;
+        private Dictionary<string, Action<EventParam>> eventDictionary = new Dictionary<string, Action<EventParam>>();
 
         public static EventManager instance => GameManager.Instance.eventManager;
 
-        void Init()
-        {
-            if (eventDictionary == null)
-            {
-                eventDictionary = new Dictionary<string, Action<EventParam>>();
-            }
-        }
         public void OnInit()
         {
-            GameManager.Instance.eventManager.Init();
         }
 
         public void OnUpdate()

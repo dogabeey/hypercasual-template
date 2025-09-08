@@ -79,13 +79,27 @@ namespace Dogabeey
 
             Application.targetFrameRate = 60;
             CurrentWorld = worlds[0];
-            LoadCurrentLevel();
+
+            if(!FindAnyObjectByType<LevelScene>())
+                LoadCurrentLevel();
         }
         private void Update()
         {
             eventManager.OnUpdate();
             soundManager.OnUpdate();
             saveManager.OnUpdate();
+        }
+        private void OnApplicationQuit()
+        {
+            eventManager.OnApplicationQuit();
+            soundManager.OnApplicationQuit();
+            saveManager.OnApplicationQuit();
+        }
+        private void OnApplicationPause(bool pause)
+        {
+            eventManager.OnApplicationPause();
+            soundManager.OnApplicationPause();
+            saveManager.OnApplicationPause();
         }
 
         public void LoadLevel(LevelScene levelScene)
