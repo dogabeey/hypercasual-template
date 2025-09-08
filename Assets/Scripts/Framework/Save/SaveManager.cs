@@ -10,15 +10,16 @@ using System.Threading;
 
 namespace Dogabeey
 {
-	public class SaveManager : SingletonComponent<SaveManager>
+    [CreateAssetMenu(fileName = "SaveManager", menuName = "Dogabeey/Managers/SaveManager")]
+    public class SaveManager : ScriptableObject, IManager
 	{
-		#region Member Variables
+        #region Member Variables
+        public static string userId;
 
-		private List<ISaveable>	saveables;
+        private List<ISaveable>	saveables;
 		private JSONNode		loadedSave;
 		private const string LogTag = "SaveManager";
 		static string DATABASE_URL = "https://wordstones-users.firebaseio.com/";
-		public static string userId;
 		[SerializeField] bool saveOnQuit = true;
 
 		#endregion
@@ -52,7 +53,6 @@ namespace Dogabeey
 
 		private void Start()
 		{
-			Debug.Log("Save file path: " + SaveFilePath);
 		}
 
 		private void OnDestroy()
@@ -72,14 +72,22 @@ namespace Dogabeey
 			}
 		}
 
-		#endregion
+		public void OnInit()
+        {
+            Debug.Log("Save file path: " + SaveFilePath);
+        }
+        public void OnUpdate()
+        {
+        }
 
-		#region Public Methods
+        #endregion
 
-		/// <summary>
-		/// Registers a saveable to be saved
-		/// </summary>
-		public void Register(ISaveable saveable)
+        #region Public Methods
+
+        /// <summary>
+        /// Registers a saveable to be saved
+        /// </summary>
+        public void Register(ISaveable saveable)
 		{
 			Saveables.Add(saveable);
 		}

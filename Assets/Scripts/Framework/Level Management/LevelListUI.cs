@@ -47,14 +47,14 @@ namespace Dogabeey
                 Destroy(child.gameObject);
             }
 
-            if(WorldManager.Instance.CurrentWorld != null)
+            if(GameManager.Instance.CurrentWorld != null)
             {
-                foreach (LevelScene level in WorldManager.Instance.CurrentWorld.levelScenes)
+                foreach (LevelScene level in GameManager.Instance.CurrentWorld.levelScenes)
                 {
                     Button node = Instantiate(levelButtonPrefab, container);
                     node.onClick.AddListener(() =>
                     {
-                        WorldManager.Instance.LoadLevel(level);
+                        GameManager.Instance.LoadLevel(level);
                     });
                     node.GetComponentInChildren<TMP_Text>().text = level.levelName;
                 }

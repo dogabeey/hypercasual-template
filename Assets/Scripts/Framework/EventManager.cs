@@ -5,33 +5,15 @@ using UnityEngine;
 
 namespace Dogabeey
 {
-    public class EventManager : MonoBehaviour
+    [CreateAssetMenu(fileName = "EventManager", menuName = "Dogabeey/Managers/EventManager")]
+    public class EventManager : ScriptableObject, IManager
     {
 
         private Dictionary<string, Action<EventParam>> eventDictionary;
 
         private static EventManager eventManager;
 
-        public static EventManager instance
-        {
-            get
-            {
-                if (!eventManager)
-                {
-                    eventManager = FindObjectOfType(typeof(EventManager)) as EventManager;
-
-                    if (!eventManager)
-                    {
-                        Debug.LogError("There needs to be one active EventManger script on a GameObject in your scene.");
-                    }
-                    else
-                    {
-                        eventManager.Init();
-                    }
-                }
-                return eventManager;
-            }
-        }
+        public static EventManager instance => GameManager.Instance.eventManager;
 
         void Init()
         {
@@ -40,6 +22,15 @@ namespace Dogabeey
                 eventDictionary = new Dictionary<string, Action<EventParam>>();
             }
         }
+        public void OnInit()
+        {
+            eventManager.Init();
+        }
+
+        public void OnUpdate()
+        {
+        }
+
 
         public static void StartListening(string eventName, Action<EventParam> listener)
         {
@@ -93,6 +84,7 @@ namespace Dogabeey
                 // OR USE  instance.eventDictionary[eventName](eventParam);
             }
         }
+
     }
 
 

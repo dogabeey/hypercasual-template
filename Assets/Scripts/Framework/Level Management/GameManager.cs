@@ -1,14 +1,28 @@
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Dogabeey
 {
-    public class WorldManager : SingletonComponent<WorldManager>
+    public interface IManager
     {
+        public void OnInit();
+        public void OnUpdate();
+    }
+
+    public class GameManager : SingletonComponent<GameManager>
+    {
+        [Header("Managers")]
+        public EventManager eventManager;
+        public SoundManager soundManager;
+        public SaveManager saveManager;
         [Header("References")]
         public List<World> worlds;
         public Transform levelContainer;

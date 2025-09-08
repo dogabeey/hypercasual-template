@@ -24,7 +24,7 @@ namespace Dogabeey
             }
             if(Input.GetKeyDown(KeyCode.L))
             {
-                WorldManager.Instance.ResetCurrentLevel();
+                GameManager.Instance.ResetCurrentLevel();
             }
             if(Input.GetKeyDown(KeyCode.A))
             {

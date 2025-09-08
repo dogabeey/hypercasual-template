@@ -11,11 +11,11 @@ namespace Dogabeey
 		public string[] randomList;
 		public void Play(string soundName)
         {
-			SoundManager.Instance.Play(soundName);
+			GameManager.Instance.soundManager.Play(soundName);
         }
 		public void PlayRandom()
         {
-			SoundManager.Instance.Play(randomList[Random.Range(0, randomList.Length - 1)]);
+			GameManager.Instance.soundManager.Play(randomList[Random.Range(0, randomList.Length - 1)]);
         }
 	}
 }

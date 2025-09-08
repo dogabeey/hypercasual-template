@@ -10,6 +10,6 @@ public class LevelText : MonoBehaviour
 
     private void Update()
     {
-        levelText.text = "LEVEL " + (WorldManager.Instance.CurrentWorld.lastPlayedLevelIndex + 1).ToString();
+        levelText.text = "LEVEL " + (GameManager.Instance.CurrentWorld.lastPlayedLevelIndex + 1).ToString();
     }
 }

@@ -13,7 +13,7 @@ namespace Dogabeey
         {
             get
             {
-                return WorldManager.Instance.CurrentWorld;
+                return GameManager.Instance.CurrentWorld;
             }
         }
 
@@ -36,7 +36,7 @@ namespace Dogabeey
 
         protected void Awake()
         {
-            SaveManager.Instance.Register(this);
+            GameManager.Instance.saveManager.Register(this);
             if(!Load())
             {
                 lastPlayedLevelIndex = 0;
@@ -61,7 +61,7 @@ namespace Dogabeey
 
         public bool Load()
         {
-            JSONNode saveData = SaveManager.Instance.LoadSave(this);
+            JSONNode saveData = GameManager.Instance.saveManager.LoadSave(this);
 
             if (saveData == null)
             {

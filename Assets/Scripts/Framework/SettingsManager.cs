@@ -71,7 +71,7 @@ namespace Dogabeey
         public void SetMusicVolume(float value)
         {
             MusicVolume = value;
-            SoundManager.Instance.loopingAudioSources.ForEach(p =>
+            GameManager.Instance.soundManager.loopingAudioSources.ForEach(p =>
             {
                 p.audioSource.volume = MusicVolume;
             });
@@ -79,7 +79,7 @@ namespace Dogabeey
         public void SetSFXVolume(float value)
         {
             SfxVolume = value;
-            SoundManager.Instance.playingAudioSources.ForEach(p =>
+            GameManager.Instance.soundManager.playingAudioSources.ForEach(p =>
             {
                 p.audioSource.volume = SfxVolume;
             });

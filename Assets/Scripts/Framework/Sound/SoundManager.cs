@@ -5,7 +5,8 @@ using Dogabeey.SimpleJSON;
 
 namespace Dogabeey
 {
-    public class SoundManager : SingletonComponent<SoundManager>, ISaveable
+    [CreateAssetMenu(fileName = "SoundManager", menuName = "Dogabeey/Managers/SoundManager")]
+    public class SoundManager : ScriptableObject, ISaveable, IManager
     {
         #region Classes
 
@@ -48,10 +49,9 @@ namespace Dogabeey
 
         #region Member Variables
 
+        private Transform soundsParent;
         internal List<PlayingSound> playingAudioSources;
         internal List<PlayingSound> loopingAudioSources;
-
-        public string SaveId { get { return "sound_manager"; } }
 
         #endregion
 
@@ -62,16 +62,27 @@ namespace Dogabeey
         public bool IsVibrationOn { get; private set; }
         #endregion
 
+        public string SaveId { get { return "sound_manager"; } }
+
         #region Unity Methods
 
-        protected override void Awake()
+        private IEnumerator Start()
         {
-            base.Awake();
+            yield return new WaitForSeconds(0.5f);
 
-            SaveManager.Instance.Register(this);
+
+            yield break;
+        }
+
+        public void OnInit()
+        {
+
+            GameManager.Instance.saveManager.Register(this);
 
             playingAudioSources = new List<PlayingSound>();
             loopingAudioSources = new List<PlayingSound>();
+
+            soundsParent = new GameObject("Sounds").transform;
 
             if (!LoadSave())
             {
@@ -79,12 +90,6 @@ namespace Dogabeey
                 IsSoundEffectsOn = true;
                 IsVibrationOn = true;
             }
-
-        }
-
-        private IEnumerator Start()
-        {
-            yield return new WaitForSeconds(0.5f);
 
             for (int i = 0; i < soundInfos.Count; i++)
             {
@@ -95,11 +100,8 @@ namespace Dogabeey
                     Play(soundInfo.id, true, 0);
                 }
             }
-
-            yield break;
         }
-
-        private void Update()
+        public void OnUpdate()
         {
             for (int i = 0; i < playingAudioSources.Count; i++)
             {
@@ -326,7 +328,7 @@ namespace Dogabeey
         {
             GameObject obj = new GameObject("sound_" + id);
 
-            obj.transform.SetParent(transform);
+            obj.transform.SetParent(soundsParent);
 
             return obj.AddComponent<AudioSource>(); ;
         }
@@ -347,7 +349,7 @@ namespace Dogabeey
 
         public bool LoadSave()
         {
-            JSONNode json = SaveManager.Instance.LoadSave(this);
+            JSONNode json = GameManager.Instance.saveManager.LoadSave(this);
 
             if (json == null)
             {
