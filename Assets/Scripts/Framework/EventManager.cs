@@ -93,6 +93,7 @@ namespace Dogabeey
         public string paramStr;
         public Type paramType;
         public bool paramBool;
+        public CurrencyModel currencyModel;
         public Dictionary<string, object> paramDictionary;
 
         public EventParam()

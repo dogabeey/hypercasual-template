@@ -13,11 +13,12 @@ namespace Dogabeey
         public class CurrencyInfo
         {
             public CurrencyModel currencyModel;
-            public Transform currencyTransform;
-            public TMP_Text currencyText;
             public float Amount { get => PlayerPrefs.GetFloat("Currency_" + currencyModel.currencyID, currencyModel.startingAmount); set => PlayerPrefs.SetFloat("Currency_" + currencyModel.currencyID, value); }
         }
 
+        [Header("References")]
+        public Transform currencyContainer;
+        public CurrencyElement currencyElementPrefab;
         [Header("Coin")]
         public TMP_Text coinText;
         public Transform coinTransform;
@@ -26,6 +27,8 @@ namespace Dogabeey
         [Header("Animation Settings")]
         public float flightDuration = 0.1f;
         public float coinSpriteMultiplier = 10;
+
+        private List<CurrencyElement> currencyElements = new List<CurrencyElement>();
 
         public float Coin { 
             get => PlayerPrefs.GetFloat("Coin", 0);
@@ -38,12 +41,20 @@ namespace Dogabeey
 
         private void Start()
         {
+            foreach (var currencyInfo in currencyInfos)
+            {
+                CurrencyElement currencyElement = currencyElementPrefab;
+                CurrencyElement instantiatedElement = Instantiate(currencyElement, currencyContainer);
+                instantiatedElement.currencyTransform = instantiatedElement.transform;
+                instantiatedElement.currencyText = instantiatedElement.GetComponentInChildren<TMP_Text>();
+                instantiatedElement.UpdateCurrencyUI(currencyInfo.currencyModel);
+                currencyElements.Add(instantiatedElement);
+            }
+
             UpdateCoinText();
-            UpdateCurrencyText();
         }
         private void Update()
         {
-            UpdateCurrencyText();
         }
 
 
@@ -56,13 +67,15 @@ namespace Dogabeey
         }
         public void AddCurrency(string currencyID, float premiumCurrencyAmount, GameObject source = null)
         {
-            CurrencyInfo currencyModel = currencyInfos.Find(x => x.currencyModel.currencyID == currencyID);
+            CurrencyElement element = currencyElements.Find(x => x.refCurrency.currencyID == currencyID);
             if (source != null)
             {
-                AddCoinAnimation(source.transform.position, currencyModel.currencyTransform.position, premiumCurrencyAmount);
+                AddCoinAnimation(source.transform.position, element.currencyTransform.position, premiumCurrencyAmount);
             }
 
-            currencyModel.Amount += premiumCurrencyAmount;
+            CurrencyInfo currencyInfo = currencyInfos.Find(x => x.currencyModel.currencyID == currencyID);
+
+            currencyInfo.Amount += premiumCurrencyAmount;
         }
         
         private void AddCoinAnimation(Vector3 sourcePosition, Vector3  targetPosition, float coinAmount)
@@ -89,17 +102,14 @@ namespace Dogabeey
             coinText.text = Mathf.FloorToInt(Coin).ToString();
 
         }
-        private void UpdateCurrencyText()
-        {
-            foreach (var currencyModel in currencyInfos)
-            {
-                currencyModel.currencyText.text = Mathf.FloorToInt(currencyModel.Amount).ToString();
-            }
-        }
 
         internal float GetCurrencyAmount(CurrencyModel costCurrency)
         {
             return currencyInfos.Find(x => x.currencyModel == costCurrency).Amount;
+        }
+        internal Sprite GetCurrencySprite(CurrencyModel costCurrency)
+        {
+            return costCurrency.currencyIcon;
         }
     }
 }

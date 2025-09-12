@@ -8,6 +8,6 @@ namespace Dogabeey
     {
         public string currencyID;
         public float startingAmount;
-        public SpriteRenderer currencySpritePrefab;
+        public Sprite currencyIcon;
     }
 }
