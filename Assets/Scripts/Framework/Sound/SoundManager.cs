@@ -95,6 +95,11 @@ namespace Dogabeey
         }
         public void OnUpdate()
         {
+            if(playingAudioSources == null || playingAudioSources.Count == 0)
+            {
+                return;
+            }
+
             for (int i = 0; i < playingAudioSources.Count; i++)
             {
                 AudioSource audioSource = playingAudioSources[i].audioSource;
